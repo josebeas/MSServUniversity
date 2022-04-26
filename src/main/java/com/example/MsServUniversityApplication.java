@@ -9,10 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
 @ComponentScan(basePackages = "com.example")
 @SpringBootApplication
+@EnableMongoRepositories
 public class MsServUniversityApplication {
 
 	public static void main(String[] args) {
