@@ -21,12 +21,14 @@ public class CoursesServiceImpl implements CoursesService {
     CoursesRepository coursesRepository;
 
     @Override
-    public Course getCourse(Course course) {
-        logger.info(String.format("Searching for courses with name %s", course.getName()));
-        Course results = coursesRepository.findByName(course.getName());
+    public Course getCourse(String courseName) {
+        logger.info(String.format("Searching for courses with name %s", courseName));
+        Course results = coursesRepository.findByName(courseName);
         if (results == null){
-            logger.info(String.format("No results found for course with name %s", course.getName()));
-            return course;
+            logger.info(String.format("No results found for course with name %s", courseName));
+            return new Course.Builder()
+                    .withName(courseName)
+                    .build();
         }
         return results;
     }

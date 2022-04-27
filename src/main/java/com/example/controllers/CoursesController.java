@@ -28,10 +28,9 @@ public class CoursesController {
     @GetMapping(value = "/find", produces = "application/json")
     public Course getCourse(String name){
         logger.info(String.format("Handling request for course with name", name));
-        return coursesService.getCourse(
-                new Course.Builder()
+        return new Course.Builder()
                         .withName(name)
-                        .build());
+                        .build();
     }
 
     @PostMapping(value = "/save", produces = "application/json")
