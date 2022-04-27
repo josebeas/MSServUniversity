@@ -26,9 +26,6 @@ public class CoursesServiceImpl implements CoursesService {
         Course results = coursesRepository.findByName(courseName);
         if (results == null){
             logger.info(String.format("No results found for course with name %s", courseName));
-            return new Course.Builder()
-                    .withName(courseName)
-                    .build();
         }
         return results;
     }

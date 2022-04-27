@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class CoursesServicesImplTests {
 
-    private String defaultCourseName = "courseName";
+    private final String defaultCourseName = "courseName";
     @Mock
     private CoursesRepository coursesRepository;
 
@@ -35,7 +36,7 @@ public class CoursesServicesImplTests {
 
     @Test
     void testGetCourse(){
-        Course actualCourse = classUnderTest.getCourse("name");
+        Course actualCourse = classUnderTest.getCourse(defaultCourseName);
         Course expectedCourse = getMockCourse();
         assertEquals(expectedCourse.getName(), actualCourse.getName(), "Course returned from service does not match");
     }
@@ -43,8 +44,7 @@ public class CoursesServicesImplTests {
     @Test
     void testGetCourse_null_course(){
         Course actualCourse = classUnderTest.getCourse(null);
-        Course expectedCourse = getMockCourse();
-        assertEquals(null, actualCourse.getName(), "Course returned from service does not match");
+        assertNull(actualCourse, "Course returned from service does not match");
     }
 
     @Test

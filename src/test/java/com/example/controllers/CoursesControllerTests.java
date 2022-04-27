@@ -8,14 +8,18 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
 public class CoursesControllerTests {
+
+    private final String defaultCourseName = "courseName";
 
     @Mock
     private CoursesService coursesService;
@@ -29,21 +33,29 @@ public class CoursesControllerTests {
     @BeforeEach
     void setup() {
         Course mockCourse = getMockCourse();
-        when(coursesService.getCourse(any())).thenReturn(mockCourse);
+        when(coursesService.getCourse(defaultCourseName)).thenReturn(mockCourse);
         when(coursesService.addCourse(any())).thenReturn(mockCourse);
     }
 
     @Test
     void testGetCourse(){
-        Course actualCourse = classUnderTest.getCourse("name");
+        Course actualCourse = classUnderTest.getCourse(defaultCourseName);
         Course expectedCourse = getMockCourse();
         assertEquals(expectedCourse.getName(), actualCourse.getName(), "Course returned from service does not match");
     }
 
     @Test
+    void testGetCourse_null_name(){
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () ->  classUnderTest.getCourse(null));
+
+        assertEquals("404 NOT_FOUND \"No data found\"",exception.getMessage(), "Wrong message");
+    }
+
+    @Test
     void testAddCourse(){
         Course actualCourse = classUnderTest.addCourse(new Course.Builder()
-                .withName("name")
+                .withName(defaultCourseName)
                 .build());
         Course expectedCourse = getMockCourse();
         assertEquals(expectedCourse.getName(), actualCourse.getName(), "Course returned from service does not match");
@@ -56,7 +68,7 @@ public class CoursesControllerTests {
     }
 
     private Course getMockCourse(){
-        String name = "name";
+        String name = defaultCourseName;
         return new Course.Builder()
                 .withName(name)
                 .build();
